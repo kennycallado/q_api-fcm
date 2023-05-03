@@ -35,11 +35,26 @@ GET http://localhost:8000/health
 GET http://localhost:8003/auth/bypass/1
 Accept: application/json
 
-# {{{ example
+# {{{ token
 
-GET http://localhost:8000/api/v1/example
+GET http://localhost:8000/api/v1/fcm/token
 Accept: application/json
-Authorization: Bearer <token>
+Authorization: Bearer 
 Content-type: application/json
+
+# }}}
+
+# {{{ messages
+
+# }}}
+
+# {{{ dispatcher
+
+POST http://localhost:8000/api/v1/fcm/token
+Accept: application/json
+Authorization: Bearer 
+Content-type: application/json
+
+[ 1, 2 ]
 
 # }}}
