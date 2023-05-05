@@ -169,32 +169,25 @@ pub async fn put_update_none(_id: i32) -> Status {
     Status::Unauthorized
 }
 
-#[put("/<id>/user", data = "<new_fcm_token>", rank = 1)]
-pub async fn put_update_by_user(
-    db: Db,
-    claims: AccessClaims,
-    id: i32,
-    new_fcm_token: Json<NewFcmToken>,
-) -> Result<Json<FcmToken>, Status> {
+#[put("/<user_id>/user", data = "<new_fcm_token>", rank = 1)]
+pub async fn put_update_by_user(db: Db, claims: AccessClaims, user_id: i32, new_fcm_token: Json<NewFcmToken>) -> Result<Json<FcmToken>, Status> {
     match claims.0.user.role.name.as_str() {
-        "admin" => {
-            update::put_update_by_user_admin(db, claims.0.user, id, new_fcm_token.into_inner())
-                .await
-        }
+        "admin" => update::put_update_by_user_admin(db, claims.0.user, user_id, new_fcm_token.into_inner()).await,
+        
         "robot" => {
-            update::put_update_by_user_admin(db, claims.0.user, id, new_fcm_token.into_inner())
+            update::put_update_by_user_admin(db, claims.0.user, user_id, new_fcm_token.into_inner())
                 .await
         }
         "coord" => {
-            update::put_update_by_user_user(db, claims.0.user, id, new_fcm_token.into_inner())
+            update::put_update_by_user_user(db, claims.0.user, user_id, new_fcm_token.into_inner())
                 .await
         }
         "thera" => {
-            update::put_update_by_user_user(db, claims.0.user, id, new_fcm_token.into_inner())
+            update::put_update_by_user_user(db, claims.0.user, user_id, new_fcm_token.into_inner())
                 .await
         }
         "user" => {
-            update::put_update_by_user_user(db, claims.0.user, id, new_fcm_token.into_inner())
+            update::put_update_by_user_user(db, claims.0.user, user_id, new_fcm_token.into_inner())
                 .await
         }
         _ => {

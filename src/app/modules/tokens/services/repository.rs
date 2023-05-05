@@ -66,3 +66,15 @@ pub async fn update_fcm_token(
 
     Ok(token)
 }
+
+pub async fn update_fcm_token_by_user_id(db: &Db, user_id: i32, new_fcm_token: NewFcmToken) -> Result<FcmToken, diesel::result::Error> {
+    let token = db
+        .run(move |conn| {
+            diesel::update(fcm_tokens::table.filter(fcm_tokens::user_id.eq(user_id)))
+                .set(new_fcm_token)
+                .get_result::<FcmToken>(conn)
+        })
+        .await?;
+
+    Ok(token)
+}
