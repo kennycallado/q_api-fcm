@@ -40,7 +40,40 @@ Accept: application/json
 GET http://localhost:8000/api/v1/fcm/token
 Accept: application/json
 Authorization: Bearer 
+
+GET http://localhost:8000/api/v1/fcm/token/1
+Accept: application/json
+Authorization: Bearer 
+
+POST http://localhost:8000/api/v1/fcm/token
+Accept: application/json
+Authorization: Bearer 
 Content-type: application/json
+
+{
+  "user_id": 3,
+  "token": null
+}
+
+PUT http://localhost:8000/api/v1/fcm/token/7
+Accept: application/json
+Authorization: Bearer 
+Content-type: application/json
+
+{
+  "user_id": 3,
+  "token": "blabla"
+}
+
+PUT http://localhost:8000/api/v1/fcm/token/3/user
+Accept: application/json
+Authorization: Bearer 
+Content-type: application/json
+
+{
+  "user_id": 3,
+  "token": null
+}
 
 # }}}
 
