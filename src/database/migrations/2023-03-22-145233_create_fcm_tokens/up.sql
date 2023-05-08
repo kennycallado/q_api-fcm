@@ -9,10 +9,14 @@ ALTER TABLE fcm_tokens
 
 SELECT diesel_manage_updated_at('fcm_tokens');
 INSERT INTO fcm_tokens (user_id, token) VALUES
-  (1,  'fr-V_B7yStCo1JIFAW6wlp:APA91bFmOOiFQxLeIeXgFlbkhADKyHh2FF2ufX0Ti2jybC9aaBLSChr0Hz-ZheVEp4SKQEjTg9-he7LShq7mXucIv-0SmmOqWFB49FClyN0UF2vxgvHSHr0piVVMDklUTajJnJjvBD9p'),
+  (1,  ''),
   (2,  null),
+  (4,  null),
   (5,  null),
   (6,  null),
+  (7,  null),
+  (8,  null),
+  (9,  null),
   (10, null)
   ;
   -- ON CONFLICT DO NOTHING;
