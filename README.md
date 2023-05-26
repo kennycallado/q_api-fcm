@@ -86,3 +86,4 @@ El directorio de servicios del módulo también puede contener por ejemplo, `hel
 ## TODO:
 
 - [ ] Something
+- [ ] Intentar dejar de usar dependencia fcm ya que usa nuevas instancias de reqwest y no puedo integrar Fetch
