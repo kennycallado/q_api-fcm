@@ -61,7 +61,7 @@ Authorization: Bearer
 Content-type: application/json
 
 {
-  "user_id": 3,
+  "user_id": 8,
   "token": "blabla"
 }
 
@@ -83,7 +83,7 @@ Content-type: application/json
 
 # {{{ dispatcher
 
-POST http://localhost:8000/api/v1/fcm/token
+POST http://localhost:8000/api/v1/fcm/dispatch/1
 Accept: application/json
 Authorization: Bearer 
 Content-type: application/json
