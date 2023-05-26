@@ -1,0 +1,55 @@
+---
+# https://github.com/fcsonline/drill
+# drill --benchmark benchmark_dispatch.yml --stats
+# also see
+# https://varnish-cache.org/intro/index.html#intro
+#
+# ``` bash
+# export TOKEN=$(curl http://localhost:8003/auth/bypass/1/ | jq .access_token | tr -d '\"')
+# drill --benchmark benchmark_dispatch.yml --stats
+# ```
+#
+# Genera reporte
+# drill --benchmark benchmark_dispatch.yml --report result
+# compara reporte con límite 1ms
+# drill --benchmark benchmark_dispatch.yml --compare result --threshold 1
+
+concurrency: 4
+base: 'http://localhost:8000'
+iterations: 10
+
+plan:
+  # - name: Include comments
+  #   include: comments.yml
+  
+  # - name: Waiting some seconds
+  #   delay:
+  #     seconds: 1
+
+  # - name: Assign access_token
+  #   assign:
+  #     key: TOKEN
+  #     value: ""
+  
+  # - name: Exec external commands
+  #   exec:
+  #     command: "curl http://localhost:8003/auth/bypass/1/ | jq .access_token | tr -d '\"'"
+  #   assign: TOKEN
+  #   tags: [token]
+
+  - name: Heath checker
+    request:
+      url: '/health'
+    tags: [ health ]
+
+  # It may fail because of 0
+  - name: Post Show dispatch
+    request:
+      method: POST
+      url: '/api/v1/fcm/dispatch/{{ iteration }}'
+      headers:
+        Accept: application/json
+        Authorization: Bearer {{ TOKEN }}
+        Content-Type: application/json
+      body: '[ 1, 2 ]'
+    tags: [ post ]

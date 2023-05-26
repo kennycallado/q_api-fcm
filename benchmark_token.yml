@@ -1,0 +1,92 @@
+---
+# https://github.com/fcsonline/drill
+# drill --benchmark benchmark_token.yml --stats
+# also see
+# https://varnish-cache.org/intro/index.html#intro
+#
+# ``` bash
+# export TOKEN=$(curl http://localhost:8003/auth/bypass/1/ | jq .access_token | tr -d '\"')
+# drill --benchmark benchmark_token.yml --stats
+# ```
+#
+# Genera reporte
+# drill --benchmark benchmark_token.yml --report result
+# compara reporte con límite 1ms
+# drill --benchmark benchmark_token.yml --compare result --threshold 1
+
+concurrency: 4
+base: 'http://localhost:8000'
+iterations: 10
+
+plan:
+  # - name: Include comments
+  #   include: comments.yml
+  
+  # - name: Waiting some seconds
+  #   delay:
+  #     seconds: 1
+
+  # - name: Assign access_token
+  #   assign:
+  #     key: TOKEN
+  #     value: ""
+  
+  # - name: Exec external commands
+  #   exec:
+  #     command: "curl http://localhost:8003/auth/bypass/1/ | jq .access_token | tr -d '\"'"
+  #   assign: TOKEN
+  #   tags: [token]
+
+  - name: Heath checker
+    request:
+      url: '/health'
+    tags: [ health ]
+
+  # user_id is unique then it may fail
+  - name: Post Index token
+    request:
+      method: POST
+      url: '/api/v1/fcm/token'
+      headers:
+        Accept: application/json
+        Authorization: Bearer {{ TOKEN }}
+        Content-Type: application/json
+      body: '{ "user_id": {{ iteration }}, "token": null }'
+    tags: [ post ]
+
+  - name: Get Index token
+    request:
+      url: '/api/v1/fcm/token'
+      headers:
+        Accept: application/json
+        Authorization: Bearer {{ TOKEN }}
+    tags: [ index ]
+
+  # It may fail because of 0
+  - name: Get Show token
+    request:
+      url: '/api/v1/fcm/token/{{ iteration }}'
+      headers:
+        Accept: application/json
+        Authorization: Bearer {{ TOKEN }}
+    tags: [ show ]
+  - name: Get Show token by User
+    request:
+      url: '/api/v1/fcm/token/{{ iteration }}/user'
+      headers:
+        Accept: application/json
+        Authorization: Bearer {{ TOKEN }}
+    tags: [ user ]
+
+  # It may fail because of 0
+  - name: Put Show token
+    request:
+      method: PUT
+      url: '/api/v1/fcm/token/{{ iteration }}'
+      headers:
+        Accept: application/json
+        Authorization: Bearer {{ TOKEN }}
+        Content-Type: application/json
+      body: '{ "user_id": {{ iteration }}, "token": null }'
+    tags: [ put ]
+---
