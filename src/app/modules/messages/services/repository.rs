@@ -1,6 +1,6 @@
 use diesel::prelude::*;
 
-use crate::config::database::Db;
+use crate::database::connection::Db;
 use crate::database::schema::fcm_messages;
 
 use crate::app::modules::messages::model::{FcmMessage, NewFcmMessage};

@@ -1,10 +1,12 @@
 use rocket::http::Status;
 use rocket::serde::json::Json;
 
+use crate::database::connection::Db;
+
+use crate::app::providers::guards::claims::AccessClaims;
+
 use crate::app::modules::messages::model::FcmMessage;
 use crate::app::modules::tokens::model::FcmToken;
-use crate::app::providers::guards::claims::AccessClaims;
-use crate::config::database::Db;
 
 use crate::app::modules::dispacher::services::config_getter::ConfigGetter;
 use crate::app::modules::dispacher::services::repository;
