@@ -10,9 +10,7 @@ use crate::app::modules::tokens::model::{FcmToken, NewFcmToken};
 
 pub fn routes() -> Vec<rocket::Route> {
     routes![
-        index_options,
-        show_options,
-        show_options_user,
+        options_all,
         get_index,
         get_index_none,
         get_show,
@@ -28,18 +26,8 @@ pub fn routes() -> Vec<rocket::Route> {
     ]
 }
 
-#[options("/")]
-pub async fn index_options() -> Status {
-    Status::Ok
-}
-
-#[options("/<_id>")]
-pub async fn show_options(_id: i32) -> Status {
-    Status::Ok
-}
-
-#[options("/<_id>/user")]
-pub async fn show_options_user(_id: i32) -> Status {
+#[options("/<_..>")]
+pub async fn options_all() -> Status {
     Status::Ok
 }
 
